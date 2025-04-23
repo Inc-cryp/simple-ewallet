@@ -1,0 +1,253 @@
+{
+	"info": {
+		"_postman_id": "68e26c5f-e490-447c-b0cb-3afbedaf0c1a",
+		"name": "Wallet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12925024"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"tesaja14\",\n    \"password\" :\"123456s8\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/create_user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"create_user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"tesaja1111\",\n    \"password\" : \"1234565\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Balance",
+			"item": [
+				{
+					"name": "TopUp",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNSwid2FsbGV0X2lkIjozLCJleHAiOjE3MTY3MTAyMjZ9.0u62khne6kzFLZoBZIsPsG2SCy7DUR9kPuYYLaHDP40",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\":100000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/balance/balance_topup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"balance",
+								"balance_topup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Balance Read",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNSwid2FsbGV0X2lkIjozLCJleHAiOjE3MTY3MTAyMjZ9.0u62khne6kzFLZoBZIsPsG2SCy7DUR9kPuYYLaHDP40",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\":50000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/balance/balance_read",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"balance",
+								"balance_read"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaction",
+			"item": [
+				{
+					"name": "Transfer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNSwid2FsbGV0X2lkIjozLCJ1c2VybmFtZSI6ImpvZHlhbG1haWRhIiwiZXhwIjoxNzE2NzE2MzkxfQ.o0fgUyyQ46NkK7IJqa-nEgbsXXgse5OWCcYNoNPWoVk",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"to_username\":\"jodyalmaida\",\n    \"amount\":50000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/transaction/transfer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"transaction",
+								"transfer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Top Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNSwid2FsbGV0X2lkIjozLCJleHAiOjE3MTY3MTM2MzV9.jWEbo0MAL_ymXRPRcIYNCod_wSVIphKsl7Ox0XuyN7Q",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/transaction/top_users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"transaction",
+								"top_users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Top Transactions Per User Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNSwid2FsbGV0X2lkIjozLCJleHAiOjE3MTY3MTM2MzV9.jWEbo0MAL_ymXRPRcIYNCod_wSVIphKsl7Ox0XuyN7Q",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/transaction/top_transactions_per_user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"transaction",
+								"top_transactions_per_user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,5 @@
+# Folder yang tidak perlu
+logs/
+
+# File sensitif
+.env
