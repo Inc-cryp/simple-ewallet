@@ -149,8 +149,6 @@ func (p *userRepo) Login(data *dto.LoginReqDTO) (*dto.RegisterRespDTO, error) {
 		return nil, err
 	}
 
-	defer statement.login.Close()
-
 	// Check if no rows were returned from the query
 	if len(resultData) < 1 {
 		return nil, errors.New("no rows returned from the query")
