@@ -128,3 +128,45 @@ func TestErrorString(t *testing.T) {
 		assert.Contains(t, errMsg, "CommonError", "Trace")
 	}
 }
+
+// NewError is called with a nil error to raise a registered status error that
+// has no underlying cause. Before the fix this dereferenced the nil error
+// message and panicked, so the panic is pinned here for both a code that is
+// registered with a client message and one that is not.
+func TestNewErrorWithNilErrorDoesNotPanic(t *testing.T) {
+	for _, errCode := range []ErrorCode{DATA_INVALID, UNAUTHORIZED, UNKNOWN_ERROR} {
+		errMsg := NewError(errCode, nil)
+
+		if assert.NotNil(t, errMsg) {
+			assert.Equal(t, errCode, errMsg.ErrorCode)
+			assert.Nil(t, errMsg.ErrorMessage, "there is no underlying error to record")
+		}
+	}
+}
+
+// The registered client message is what reaches the client. The raw error is
+// internal: ErrorMessage is tagged json:"-", and the handlers pass driver
+// errors such as Postgres constraint violations straight in, so the raw text
+// must not become the client-facing message.
+func TestClientMessageIsTheRegisteredOneNotTheRawError(t *testing.T) {
+	raw := `pq: duplicate key value violates unique constraint "users_email_key"`
+
+	errMsg := NewError(DATA_INVALID, errors.New(raw))
+
+	assert.Equal(t, "Invalid Data Request", errMsg.ClientMessage)
+	assert.NotContains(t, errMsg.ClientMessage, "pq:", "the raw driver error must not be the client message")
+
+	if assert.NotNil(t, errMsg.ErrorMessage) {
+		assert.Equal(t, raw, *errMsg.ErrorMessage, "the raw error is still kept for logging")
+	}
+}
+
+// Error() is what the HTTP layer serialises, so the leak is observable there.
+func TestHttpErrorDoesNotLeakTheRawError(t *testing.T) {
+	raw := `pq: password authentication failed for user "wallet"`
+
+	httpErr := NewError(DATA_INVALID, errors.New(raw)).ToHttpError()
+
+	assert.Equal(t, "Invalid Data Request", httpErr.Error())
+	assert.NotContains(t, httpErr.Error(), "password authentication failed")
+}

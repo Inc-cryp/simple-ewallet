@@ -76,8 +76,27 @@ func NewError(errCode ErrorCode, err error) *CommonError {
 		}
 	}
 
+	// The registered message is the client-facing one, and Error() returns
+	// ClientMessage, so that is what callers and HTTP responses surface. The
+	// raw underlying error goes to ErrorMessage, which is tagged json:"-" and
+	// therefore never leaves the process. Handlers pass driver errors (e.g. a
+	// Postgres constraint violation) straight in here, so using the raw text
+	// as the client message would leak internals and drop the curated text.
+	//
+	// A few codes are registered without a ClientMessage (UNAUTHORIZED), so
+	// there is no curated text to send; fall back to the raw error rather
+	// than returning an empty message to the client.
+	//
+	// errMsg is nil when err is nil, which is a legitimate call meaning "no
+	// underlying cause". It is kept as a pointer so that nil survives instead
+	// of being dereferenced.
+	registeredMessage := commonError.ClientMessage
+	if registeredMessage == "" && errMsg != nil {
+		registeredMessage = *errMsg
+	}
+
 	return &CommonError{
-		ClientMessage: *errMsg,
+		ClientMessage: registeredMessage,
 		SystemMessage: commonError.SystemMessage,
 		ErrorCode:     errCode,
 		ErrorTrace:    errTrace,
